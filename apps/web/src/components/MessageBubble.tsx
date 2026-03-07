@@ -1,4 +1,5 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
+import ReactMarkdown from 'react-markdown'
 import type { Message } from '../hooks/useChat'
 
 interface Props {
@@ -9,11 +10,7 @@ export function MessageBubble({ message }: Props) {
   const isUser = message.role === 'user'
 
   return (
-    <Box
-      display="flex"
-      justifyContent={isUser ? 'flex-end' : 'flex-start'}
-      mb={4}
-    >
+    <Flex justify={isUser ? 'flex-end' : 'flex-start'} mb={4}>
       <Box
         maxW="75%"
         bg={isUser ? 'blue.500' : 'white'}
@@ -24,22 +21,16 @@ export function MessageBubble({ message }: Props) {
         boxShadow="sm"
         borderWidth={isUser ? 0 : 1}
         borderColor="gray.100"
-        outline={message.flagged ? '2px solid' : 'none'}
-        outlineColor={message.flagged ? 'orange.400' : 'none'}
+        fontSize="md"
+        lineHeight="tall"
       >
-        <Text
-          fontSize="lg"
-          lineHeight="tall"
-          whiteSpace="pre-wrap"
-        >
-          {message.content}
-        </Text>
         {message.flagged && (
-          <Text fontSize="xs" color="orange.500" mt={2} fontWeight="semibold">
-            ⚠ This message has been flagged for review
+          <Text fontSize="xs" color="orange.400" mb={2} fontWeight="600">
+            ⚠ Flagged for review
           </Text>
         )}
+        <ReactMarkdown>{message.content}</ReactMarkdown>
       </Box>
-    </Box>
+    </Flex>
   )
 }
